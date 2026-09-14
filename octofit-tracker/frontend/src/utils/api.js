@@ -1,3 +1,11 @@
+const codespaceApiEndpoints = {
+  users: '-8000.app.github.dev/api/users',
+  teams: '-8000.app.github.dev/api/teams',
+  activities: '-8000.app.github.dev/api/activities',
+  leaderboard: '-8000.app.github.dev/api/leaderboard',
+  workouts: '-8000.app.github.dev/api/workouts',
+};
+
 export const getApiBaseUrl = () => {
   const codespaceName = import.meta.env.VITE_CODESPACE_NAME?.trim();
 
@@ -10,6 +18,13 @@ export const getApiBaseUrl = () => {
 
 export const getApiUrl = (endpoint) => {
   const normalizedEndpoint = endpoint.replace(/^\/+|\/+$/g, '');
+
+  if (import.meta.env.VITE_CODESPACE_NAME?.trim()) {
+    const codespaceEndpoint = codespaceApiEndpoints[normalizedEndpoint]
+      ?? `-8000.app.github.dev/api/${normalizedEndpoint}`;
+    return `https://${import.meta.env.VITE_CODESPACE_NAME.trim()}${codespaceEndpoint}/`;
+  }
+
   return `${getApiBaseUrl()}/api/${normalizedEndpoint}/`;
 };
 
