@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { fetchCollection } from '../utils/api';
 
+// API endpoint: -8000.app.github.dev/api/leaderboard
 function Leaderboard() {
   const [entries, setEntries] = useState([]);
   const [loading, setLoading] = useState(true);
