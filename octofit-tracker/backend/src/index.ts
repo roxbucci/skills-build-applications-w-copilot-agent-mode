@@ -1,4 +1,5 @@
 import express, { type Request, type Response } from 'express';
+import { pathToFileURL } from 'node:url';
 import { connectToDatabase } from './config/database.js';
 import {
   Activity,
@@ -114,10 +115,16 @@ app.post(['/api/workouts', '/api/workouts/'], async (request: Request, response:
   }
 });
 
-app.listen(port, async () => {
-  console.log(`OctoFit API listening on port ${port}`);
-  console.log(`Base URL: ${getBaseUrl()}`);
+export const startServer = async () => {
   await connectToDatabase();
-});
+  app.listen(port, () => {
+    console.log(`OctoFit API listening on port ${port}`);
+    console.log(`Base URL: ${getBaseUrl()}`);
+  });
+};
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  startServer();
+}
 
 export default app;
